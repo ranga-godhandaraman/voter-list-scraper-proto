@@ -1,0 +1,26 @@
+# Downloader-specific settings (extends recon settings; does not replace them)
+
+download:
+  default_output: "downloads"
+  default_delay_seconds: 1.0
+  default_workers: 1
+  captcha_timeout_seconds: 300
+  prefer_roll_kinds:
+    # When SIR Final is published ("SIR done"), prefer Draft parts over Final.
+    - DR
+    - DRAFT
+    - FIR
+    - FINAL
+  # Newest years are discovered from the live SPA; this is only a documentation hint
+  known_year_hints:
+    - "2026"
+    - "2025"
+    - "2024"
+
+compliance:
+  # Hard rules — the downloader must never violate these
+  no_captcha_bypass: true
+  no_request_signing_reimplementation: true
+  use_spa_for_signed_calls: true
+  human_in_the_loop_for_pdf: true
+  polite_rate_limits: true

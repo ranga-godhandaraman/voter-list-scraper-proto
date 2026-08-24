@@ -1,0 +1,57 @@
+# ECI Electoral Roll Reconnaissance Configuration
+# Policy: public endpoints only, polite rate limits, no mass PDF downloads,
+# no CAPTCHA/auth/anti-bot bypass.
+
+target:
+  site_url: "https://voters.eci.gov.in"
+  download_eroll_path: "/download-eroll"
+  gateway_url: "https://gateway-voters.eci.gov.in"
+  secondary_gateways:
+    - "https://gateway-vpd.eci.gov.in"
+    - "https://gateway-s1-blo.eci.gov.in"
+    - "https://gateway-s2-blo.eci.gov.in"
+  application_name: "VSP"
+  platform_type: "web"
+  channel_id: "VSP"
+
+http:
+  user_agent: "ECI-Eroll-Recon/1.0 (+research; polite; no mass-download)"
+  timeout_seconds: 45
+  max_retries: 3
+  retry_backoff_seconds: 1.5
+  # Polite delay between sequential public API calls
+  request_delay_seconds: 0.45
+  verify_ssl: true
+
+browser:
+  headless: true
+  navigation_timeout_ms: 60000
+  # Observational only — does not automate CAPTCHA or downloads
+  capture_network: true
+  capture_storage: true
+  max_wait_for_spa_ms: 15000
+
+recon:
+  # Inventory depth for public geo hierarchy
+  probe_languages_per_state: true
+  # Do NOT call signed/encrypted PDF generation endpoints
+  skip_signed_endpoints: true
+  # At most one sample PDF metadata analysis if a public sample is available
+  max_sample_pdfs: 0
+  years_to_note:
+    - "2024"
+    - "2025"
+    - "2026"
+
+output:
+  dir: "output"
+  excel_dir: "excel"
+  docs_dir: "docs"
+  logs_dir: "logs"
+  raw_dir: "output/raw"
+
+compliance:
+  respect_robots: true
+  no_mass_download: true
+  no_bypass_protections: true
+  identify_only_anti_bot: true
